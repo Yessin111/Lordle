@@ -189,10 +189,10 @@ function Wordle() {
                     alignItems: "center",
                     zIndex: "1",
                     width: "100vw",
-                    height: "40vh",
+                    height: "30vh",
                     backgroundColor: "inherit",
                 }}>
-                    <h1 style={{marginBottom: "0.25vh"}}>Guess the Lorcana Card</h1>
+                    <h1 style={{marginBottom: "0vh", marginTop: "4vh"}}>Guess the Lorcana Card</h1>
                     <Box onClick={() => {
                         if (gameComplete) {
                             setGameComplete(false)
@@ -235,6 +235,7 @@ function Wordle() {
                             renderInput={(params) => <TextField {...params} placeholder={guessText}/>}
                             sx={{
                                 width: "25vw",
+                                minWidth: "250px",
                                 "& input": {color: "#fff", opacity: 1},
                                 "& .MuiInputBase-input::placeholder": {color: "#fff", opacity: 0.5},
                             }}
@@ -243,8 +244,7 @@ function Wordle() {
                             }}
                         />
                     </Box>
-                    <br/>
-                    <div style={{textAlign: "center", marginTop: "-1vh"}}>
+                    <div style={{textAlign: "center", marginTop: "2vh"}}>
                         <Box sx={{
                             display: "grid",
                             gridTemplateColumns: columns.map(col => `${col.width}`).join(" "),
@@ -273,8 +273,7 @@ function Wordle() {
                             paddingTop: "10px",
                             paddingBottom: "10px",
                             borderRadius: "8px",
-                            marginTop: "10px",
-                            marginBottom: "0.25em"
+                            marginTop: "1vh",
                         }}
                         >
                             {columns.map((col) => (<Typography key={"guessed_" + col.field} variant="body1"
@@ -307,8 +306,8 @@ function Wordle() {
                         </Box>
                     </div>
                 </div>
-                <div style={{textAlign: "center", marginTop: "40vh", zIndex: "0", marginBottom: "1rem"}}>
-                    <List sx={{display: "flex", flexDirection: "column", gap: 2, marginTop: "20px"}}>
+                <div style={{textAlign: "center", marginTop: "35vh", zIndex: "0", marginBottom: "1rem"}}>
+                    <List sx={{display: "flex", flexDirection: "column", gap: 2, marginTop: "1vh"}}>
                         {rows.map((row) => (<ListItem key={row.name} sx={{padding: 0}}>
                             <Card sx={{
                                 backgroundColor: "#1d1f23",
