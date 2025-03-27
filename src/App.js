@@ -259,7 +259,7 @@ function Wordle() {
                             <div style={{display: "flex", justifyContent: "center", gap: "2vh", marginTop: "2vh"}}>
                                 <Box sx={{
                                     display: "grid",
-                                    gridAutoRows: "9vh",
+                                    gridAutoRows: "7.5vh",
                                     backgroundColor: "#1d1f23",
                                     gridTemplateColumns: 'repeat(1, 1fr)',
                                     color: "#fff",
@@ -275,7 +275,7 @@ function Wordle() {
                                     {columns.map((col) => (
                                         col.field === "image" ? null : (
                                             <Typography key={"columns_" + col.field} variant="body1"
-                                                        sx={{fontWeight: "bold", fontSize: "1.5rem"}}>
+                                                        sx={{fontWeight: "bold", fontSize: "1.25rem"}}>
                                                 {col.headerName}
                                             </Typography>
                                         )
@@ -283,7 +283,7 @@ function Wordle() {
                                 </Box>
                                 <Box sx={{
                                     display: "grid",
-                                    gridAutoRows: "9vh",
+                                    gridAutoRows: "7.5vh",
                                     backgroundColor: "#1d1f23",
                                     gridTemplateColumns: 'repeat(1, 1fr)',
                                     color: "#fff",
@@ -301,7 +301,7 @@ function Wordle() {
                                             <Typography key={"guessed_" + col.field} variant="body1"
                                                         sx={{
                                                             fontWeight: "bold",
-                                                            fontSize: "1.5rem",
+                                                            fontSize: "1.25rem",
                                                         }}
                                                         onClick={() => reveal(col.field)}
                                             >
