@@ -175,13 +175,13 @@ function Wordle() {
         generateRandomCard(filteredCards)
     }
 
-    console.log(randomCard)
+    console.log(document.documentElement.clientWidth)
 
     if (document.documentElement.clientWidth < 1000) {
         return (
             <div className="App">
                 <header className="App-header">
-                    <h1 style={{marginBottom: "0vh", marginTop: "4vh"}}>Laurens ga weg</h1>
+                    <h1 style={{marginBottom: "0vh", marginTop: "4vh"}}>Does not work on mobile</h1>
                 </header>
             </div>
         )
