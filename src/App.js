@@ -21,7 +21,7 @@ function Wordle() {
     const [modalOpen, setModalOpen] = useState(false);
     const [selectedImage, setSelectedImage] = useState(null);
     const [isExploding, setIsExploding] = React.useState(false);
-    const [hovered, setHovered] = useState(null);
+    // const [hovered, setHovered] = useState(null);
     const [gameComplete, setGameComplete] = useState(false);
 
     const rarities = ["Common", "Uncommon", "Rare", "Super Rare", "Legendary"];
@@ -228,7 +228,7 @@ function Wordle() {
                                     '& > img': {mr: 2, flexShrink: 0, width: "15%"},
                                     fontSize: "1.25rem"
                                 }} {...optionProps}>
-                                    <img loading="lazy" srcSet={option.images.full} src={option.images.full}/>
+                                    <img loading="lazy" srcSet={option.images.full} src={option.images.full} alt={option.name + " option image"}/>
                                     {option.version ? `${option.name} | ${option.version}` : option.name}
                                 </Box>);
                             }}
