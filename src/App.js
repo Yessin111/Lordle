@@ -70,7 +70,7 @@ function Wordle() {
         window.sessionStorage.setItem("randomCard", JSON.stringify(finishedCard));
     }
 
-    const addRow = (card) => {
+    const addRow = (card, mobile) => {
         setGuessed(prevGuessed => {
             Object.keys(prevGuessed).forEach(key => {
                 if (prevGuessed[key] === "???" || key === "image") {
@@ -88,7 +88,9 @@ function Wordle() {
             });
             return prevGuessed;
         });
-        setRows(prevRows => [card, ...prevRows]);
+        if (!mobile) {
+            setRows(prevRows => [card, ...prevRows]);
+        }
         if (cardsMatch(card, randomCard)) {
             handleImageClick(card.image, card.type === "Location");
             setIsExploding(true);
@@ -175,15 +177,177 @@ function Wordle() {
         generateRandomCard(filteredCards)
     }
 
-    console.log(document.documentElement.clientWidth)
+    console.log(randomCard)
 
     if (document.documentElement.clientWidth < 1000) {
         return (
-            <div className="App">
-                <header className="App-header">
-                    <h1 style={{marginBottom: "0vh", marginTop: "4vh"}}>Does not work on mobile</h1>
-                </header>
-            </div>
+            <ThemeProvider theme={lorcanaTheme}>
+                <div className="App">
+                    <header className="App-header">
+                        <div style={{
+                            top: "0px",
+                            position: "fixed",
+                            display: 'flex',
+                            flexDirection: 'column',
+                            textAlign: "center",
+                            alignItems: "center",
+                            zIndex: "1",
+                            width: "100vw",
+                            height: "30vh",
+                            backgroundColor: "inherit",
+                        }}>
+                            <h1 style={{marginBottom: "0vh", marginTop: "4vh"}}>Guess the Lorcana Card</h1>
+                            <Box onClick={() => {
+                                if (gameComplete) {
+                                    setGameComplete(false)
+                                    setGuessed({...emptyGuessed});
+                                    setGuessText("Guess");
+                                    setRows([]);
+                                    setFilteredCards(filteredCardsPerma);
+                                    generateRandomCard(filteredCards)
+                                }
+                            }}>
+                                <CustomAutocomplete
+                                    PaperComponent={CustomPaper}
+                                    disablePortal
+                                    options={filteredCards}
+                                    noOptionsText="No cards found"
+                                    value={value}
+                                    onChange={(event, newValue) => {
+                                        if (newValue) {
+                                            setValue(null);
+                                            setInputValue('');
+                                            addRow(buildCard(newValue), true);
+                                            setFilteredCards((prevState) => prevState.filter(card => card.id !== newValue.id));
+                                        }
+                                    }}
+                                    inputValue={inputValue}
+                                    onInputChange={(event, newInputValue) => {
+                                        setInputValue(newInputValue);
+                                    }}
+                                    getOptionLabel={(option) => option.version ? `${option.name} | ${option.version}` : option.name}
+                                    renderOption={(props, option) => {
+                                        const {key, ...optionProps} = props;
+                                        return (<Box key={key} component="li" sx={{
+                                            '& > img': {mr: 2, flexShrink: 0, width: "15%"},
+                                            fontSize: "1.25rem"
+                                        }} {...optionProps}>
+                                            <img loading="lazy" srcSet={option.images.full} src={option.images.full}
+                                                 alt={option.name + " option image"}/>
+                                            {option.version ? `${option.name} | ${option.version}` : option.name}
+                                        </Box>);
+                                    }}
+                                    renderInput={(params) => <TextField {...params} placeholder={guessText}/>}
+                                    sx={{
+                                        width: "25vw",
+                                        minWidth: "250px",
+                                        "& input": {color: "#fff", opacity: 1},
+                                        "& .MuiInputBase-input::placeholder": {color: "#fff", opacity: 0.5},
+                                    }}
+                                    componentsProps={{
+                                        popper: {
+                                            sx: {
+                                                "& .MuiAutocomplete-noOptions": {
+                                                    color: "#fff",
+                                                    fontSize: "1.25rem"
+                                                }
+                                            }
+                                        }
+                                    }}
+                                />
+                            </Box>
+                            <div style={{display: "flex", justifyContent: "center", gap: "2vh", marginTop: "2vh"}}>
+                                <Box sx={{
+                                    display: "grid",
+                                    gridAutoRows: "9vh",
+                                    backgroundColor: "#1d1f23",
+                                    gridTemplateColumns: 'repeat(1, 1fr)',
+                                    color: "#fff",
+                                    paddingLeft: "5px",
+                                    paddingRight: "5px",
+                                    paddingTop: "10px",
+                                    paddingBottom: "10px",
+                                    borderRadius: "8px",
+                                    width: "40vw",
+                                    alignItems: "center",
+                                    justifyItems: "center"
+                                }}>
+                                    {columns.map((col) => (
+                                        col.field === "image" ? null : (
+                                            <Typography key={"columns_" + col.field} variant="body1"
+                                                        sx={{fontWeight: "bold", fontSize: "1.5rem"}}>
+                                                {col.headerName}
+                                            </Typography>
+                                        )
+                                    ))}
+                                </Box>
+                                <Box sx={{
+                                    display: "grid",
+                                    gridAutoRows: "9vh",
+                                    backgroundColor: "#1d1f23",
+                                    gridTemplateColumns: 'repeat(1, 1fr)',
+                                    color: "#fff",
+                                    paddingLeft: "5px",
+                                    paddingRight: "5px",
+                                    paddingTop: "10px",
+                                    paddingBottom: "10px",
+                                    borderRadius: "8px",
+                                    width: "40vw",
+                                    alignItems: "center",
+                                    justifyItems: "center"
+                                }}>
+                                    {columns.map((col) => (
+                                        col.field === "image" ? null : (
+                                            <Typography key={"guessed_" + col.field} variant="body1"
+                                                        sx={{
+                                                            fontWeight: "bold",
+                                                            fontSize: "1.5rem",
+                                                        }}
+                                                        onClick={() => reveal(col.field)}
+                                            >
+                                                {col.field === "name" && guessed[col.field].includes('|') ? (<>
+                                                    {guessed[col.field].split('|')[0]}
+                                                    <br/>
+                                                    {guessed[col.field].split('|')[1]}
+                                                </>) : guessed[col.field]}
+                                            </Typography>)))}
+                                </Box>
+                            </div>
+                        </div>
+                    </header>
+                    {modalOpen && (<div
+                        className="modal"
+                        style={{
+                            position: "fixed",
+                            top: 0,
+                            left: 0,
+                            width: "100%",
+                            height: "100%",
+                            backgroundColor: "rgba(0, 0, 0, 0.8)",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            zIndex: 3,
+                        }}
+                        onClick={closeModal} // Close modal when clicking outside the image
+                    >
+                        <img
+                            key={selectedImage.src}
+                            src={selectedImage.src}
+                            alt="Enlarged"
+                            style={{
+                                maxWidth: "90%",
+                                maxHeight: "90%",
+                                borderRadius: "8px",
+                                transform: selectedImage.rotate ? "rotate(90deg)" : "none",
+                            }}
+                        />
+                        <>{isExploding && <Confetti particleCount={200}
+                                                    colors={["#ffd470", "#ae88b7", "#7fbc75", "#ed6772", "#6cdbf7", "#c3d1da"]}
+                                                    shapeSize={20} spreadDeg={45} launchSpeed={1.25}/>}</>
+                    </div>)}
+                </div>
+            </ThemeProvider>
         )
     }
 
@@ -223,7 +387,7 @@ function Wordle() {
                                 if (newValue) {
                                     setValue(null);
                                     setInputValue('');
-                                    addRow(buildCard(newValue));
+                                    addRow(buildCard(newValue), false);
                                     setFilteredCards((prevState) => prevState.filter(card => card.id !== newValue.id));
                                 }
                             }}
