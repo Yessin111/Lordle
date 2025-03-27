@@ -126,7 +126,7 @@ function Wordle() {
 
         if (field === "image") {
             return "inherit";
-        } else if (field === "name" && randomCard[field].split(' | ')[0] === row[field].split(' | ')[0] && row[field] !== randomCard[field]  ) {
+        } else if (field === "name" && randomCard[field].split(' | ')[0] === row[field].split(' | ')[0] && row[field] !== randomCard[field]) {
             return `3px solid ${customColors.yellow}`;
         } else if (field === "color" && row[field].length === randomCard[field].length && row[field].filter(element => randomCard[field].includes(element)).length === row[field].length) {
             return `3px solid ${customColors.green}`;
@@ -176,6 +176,16 @@ function Wordle() {
     }
 
     console.log(randomCard)
+
+    if (document.documentElement.clientWidth < 1000) {
+        return (
+            <div className="App">
+                <header className="App-header">
+                    <h1 style={{marginBottom: "0vh", marginTop: "4vh"}}>Laurens ga weg</h1>
+                </header>
+            </div>
+        )
+    }
 
     return (<ThemeProvider theme={lorcanaTheme}>
         <div className="App">
@@ -228,7 +238,8 @@ function Wordle() {
                                     '& > img': {mr: 2, flexShrink: 0, width: "15%"},
                                     fontSize: "1.25rem"
                                 }} {...optionProps}>
-                                    <img loading="lazy" srcSet={option.images.full} src={option.images.full} alt={option.name + " option image"}/>
+                                    <img loading="lazy" srcSet={option.images.full} src={option.images.full}
+                                         alt={option.name + " option image"}/>
                                     {option.version ? `${option.name} | ${option.version}` : option.name}
                                 </Box>);
                             }}
@@ -285,8 +296,8 @@ function Wordle() {
                                                                    alignItems: "center",
                                                                    justifyContent: "center"
                                                                }}
-                                                               // onMouseEnter={() => setHovered(col.field)}
-                                                               // onMouseLeave={() => setHovered(null)}
+                                // onMouseEnter={() => setHovered(col.field)}
+                                // onMouseLeave={() => setHovered(null)}
                                                                onClick={() => reveal(col.field)}
                             >
                                 {col.field === "image" ? (<img
@@ -306,7 +317,7 @@ function Wordle() {
                         </Box>
                     </div>
                 </div>
-                <div style={{textAlign: "center", marginTop: "35vh", zIndex: "0", marginBottom: "1rem"}}>
+                <div style={{textAlign: "center", marginTop: "40vh", zIndex: "0", marginBottom: "1rem"}}>
                     <List sx={{display: "flex", flexDirection: "column", gap: 2, marginTop: "1vh"}}>
                         {rows.map((row) => (<ListItem key={row.name} sx={{padding: 0}}>
                             <Card sx={{
