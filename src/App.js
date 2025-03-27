@@ -33,24 +33,24 @@ function Wordle() {
             .catch(error => console.error('Error fetching data:', error));
     }, []);
 
-    useEffect(() => {
-        if (hovered !== null && guessed[hovered] === "???") {
-            setGuessed(prevState => ({
-                ...prevState,
-                [hovered]: "Reveal?"
-            }));
-        } else if (hovered === null) {
-            setGuessed(prevState => {
-                const updatedGuessed = {...prevState}; // Create a shallow copy of the object
-                for (const key in prevState) {
-                    if (prevState[key] === "Reveal?") {
-                        updatedGuessed[key] = "???"; // Only reset fields with "Reveal?"
-                    }
-                }
-                return updatedGuessed; // Return the updated object
-            });
-        }
-    }, [hovered]);
+    // useEffect(() => {
+    //     if (hovered !== null && !gameComplete && guessed[hovered] === "???") {
+    //         setGuessed(prevState => ({
+    //             ...prevState,
+    //             [hovered]: "Reveal?"
+    //         }));
+    //     } else if (hovered === null) {
+    //         setGuessed(prevState => {
+    //             const updatedGuessed = {...prevState}; // Create a shallow copy of the object
+    //             for (const key in prevState) {
+    //                 if (prevState[key] === "Reveal?") {
+    //                     updatedGuessed[key] = "???"; // Only reset fields with "Reveal?"
+    //                 }
+    //             }
+    //             return updatedGuessed; // Return the updated object
+    //         });
+    //     }
+    // }, [gameComplete, guessed, hovered]);
 
     const generateFilteredCards = (data) => {
         setFilteredCardsPerma(data.cards.filter(card => rarities.includes(card.rarity) && !card.foilTypes.includes("Silver") && card.variant === undefined && card.name !== "Half Hexwell Crown").sort((a, b) => {
@@ -228,7 +228,7 @@ function Wordle() {
                                     '& > img': {mr: 2, flexShrink: 0, width: "15%"},
                                     fontSize: "1.25rem"
                                 }} {...optionProps}>
-                                    <img srcSet={option.images.full} src={option.images.full}/>
+                                    <img loading="lazy" srcSet={option.images.full} src={option.images.full}/>
                                     {option.version ? `${option.name} | ${option.version}` : option.name}
                                 </Box>);
                             }}
@@ -286,8 +286,8 @@ function Wordle() {
                                                                    alignItems: "center",
                                                                    justifyContent: "center"
                                                                }}
-                                                               onMouseEnter={() => setHovered(col.field)}
-                                                               onMouseLeave={() => setHovered(null)}
+                                                               // onMouseEnter={() => setHovered(col.field)}
+                                                               // onMouseLeave={() => setHovered(null)}
                                                                onClick={() => reveal(col.field)}
                             >
                                 {col.field === "image" ? (<img
